@@ -1,4 +1,5 @@
-from ..models.user_model import UserModel
+from api.models.user_model import UserModel
+from api.utils.hash import Hash
 
 
 class UserService:
@@ -6,7 +7,7 @@ class UserService:
     def createUser(username, email, password):
         # Create user in database
         user = UserModel.objects.create(
-            username=username, email=email, password=password
+            username=username, email=email, password=Hash.hash(password)
         )
         return user
     @staticmethod
@@ -33,6 +34,6 @@ class UserService:
         except UserModel.DoesNotExist:
             user = None
         if user:
-            user.password = password
+            user.password = Hash.hash(password)
             user.save()
         return user

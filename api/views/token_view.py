@@ -9,6 +9,8 @@ from api.errors.bad_request import BadRequest
 from api.errors.not_found import NotFound
 from rest_framework.decorators import action
 from api.services.user_service import UserService
+from api.utils.hash import Hash
+from api.utils.cipher import HSACipher
 
 
 class TokenViewSet(viewsets.ViewSet):
@@ -22,9 +24,9 @@ class TokenViewSet(viewsets.ViewSet):
             username = request.data.get("username")
             password = request.data.get("password")
             user = UserService.getUserByUsername(username)
-            if user and user.password == password:
+            if user and Hash.checkHash(password, user.password):
                 token = TokenService.createToken(user.id)
-                return Response({"access": token.token}, status=status.HTTP_200_OK)
+                return Response({"access": HSACipher.decrypt(token.token)}, status=status.HTTP_200_OK)
             else:
                 raise NotFound()
         except Exception as e:

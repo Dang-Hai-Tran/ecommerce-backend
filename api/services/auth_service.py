@@ -30,9 +30,11 @@ class TokenAuthentication(BaseAuthentication):
             if exp < timezone.now().timestamp():
                 raise AuthenticationFailed("Token expired")
             user = get_user_model().objects.get(id=userId)
-            token = TokenModel.objects.get(user=user, token=token)
+            token = TokenService.getToken(token)
             if not token.isActive:
                 raise AuthenticationFailed("Token deactivated")
+            if token.user != user:
+                raise AuthenticationFailed("Invalid token")
             return (user, token)
         except Exception as e:
             print(e)
