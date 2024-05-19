@@ -6,8 +6,6 @@ worker = 4
 
 wsgi_app = "backend.wsgi:application"
 
-from backend.settings import STATIC_ROOT
-
 # Config ssl cert
 certfile = "ssl/cert.pem"
 keyfile = "ssl/key.pem"

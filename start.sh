@@ -29,4 +29,4 @@ source /Users/datran/.local/share/virtualenvs/ecommerce-wOAtAchP/bin/activate
 
 cd /Users/datran/learn_devs/fullstack/ecommerce
 
-gunicorn -c gunicorn/gunicorn.conf.py
+gunicorn --reload -c gunicorn/gunicorn.conf.py

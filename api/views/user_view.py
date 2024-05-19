@@ -52,7 +52,7 @@ class UserViewSet(viewsets.ModelViewSet):
             print(e)
             raise BadRequest()
 
-    @action(methods=["get"], detail=False, permission_classes=[IsAuthenticated])
+    @action(methods=["get"], detail=True, permission_classes=[IsAuthenticated])
     def getMe(self, request):
         try:
             user = request.user
@@ -66,11 +66,10 @@ class UserViewSet(viewsets.ModelViewSet):
     def logOut(self, request):
         try:
             user = request.user
-            tokens = list(TokenModel.objects.filter(user=user))
+            tokens = list(TokenService.getAllTokensOfUser(user))
             for token in tokens:
                 TokenService.deactivateToken(token.token)
-            serializer = self.get_serializer(user)
-            return Response({serializer.data}, status=status.HTTP_200_OK)
+            return Response({"message": "Logout successfully"}, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             raise BadRequest()

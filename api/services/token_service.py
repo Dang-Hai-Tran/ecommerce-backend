@@ -12,13 +12,20 @@ class TokenService:
         token = JwtToken.encode(userId)
         expired_at = timezone.now() + JWT_TOKEN.get("accessTokenLifeTime")
         user = UserModel.objects.get(id=userId)
-        token = TokenModel.objects.create(
-            token=token, user=user, expired_at=expired_at
-        )
+        token = TokenModel.objects.create(token=token, user=user, expired_at=expired_at)
         return token
 
     @staticmethod
     def deactivateToken(token: str):
-        tokenModel = TokenModel.objects.get(token=token)
-        tokenModel.isActive = False
-        tokenModel.save()
+        token = TokenModel.objects.get(token=token)
+        if token.isActive:
+            token.isActive = False
+            token.save()
+
+    @staticmethod
+    def getToken(token: str):
+        return TokenModel.objects.get(token=token)
+
+    @staticmethod
+    def getAllTokensOfUser(user: UserModel):
+        return TokenModel.objects.filter(user=user)
