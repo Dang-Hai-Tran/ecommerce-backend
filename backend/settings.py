@@ -139,3 +139,21 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+from datetime import timedelta
+from cryptography.hazmat.primitives import serialization
+
+JWT_TOKEN = {
+    "algorithm": "RS256",
+    "accessTokenLifeTime": timedelta(days=1),
+}
+
+with open("keys/public_key.pem", "rb") as f:
+    PUBLIC_KEY = serialization.load_pem_public_key(f.read())
+
+with open("keys/private_key.pem", "rb") as f:
+    PRIVATE_KEY = serialization.load_pem_private_key(f.read(), password=None)
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("api.services.auth_service.TokenAuthentication",)
+}

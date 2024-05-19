@@ -9,6 +9,8 @@ djangorestframework = "*"
 gunicorn = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+pyjwt = "*"
+cryptography = "*"
 
 [dev-packages]
 
