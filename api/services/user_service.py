@@ -10,29 +10,23 @@ class UserService:
             username=username, email=email, password=Hash.hash(password)
         )
         return user
+
     @staticmethod
     def getUserByUsername(username: str):
         # Get user by username
-        try:
-            user = UserModel.objects.get(username=username)
-        except UserModel.DoesNotExist:
-            user = None
+        user = UserModel.objects.get(username=username)
         return user
+
     @staticmethod
     def getUserById(userId: str):
         # Get user by id
-        try:
-            user = UserModel.objects.get(id=userId)
-        except UserModel.DoesNotExist:
-            user = None
+        user = UserModel.objects.get(id=userId)
         return user
+
     @staticmethod
     def updateUserPassword(userId: str, password: str):
         # Update user password
-        try:
-            user = UserModel.objects.get(id=userId)
-        except UserModel.DoesNotExist:
-            user = None
+        user = UserModel.objects.get(id=userId)
         if user:
             user.password = Hash.hash(password)
             user.save()

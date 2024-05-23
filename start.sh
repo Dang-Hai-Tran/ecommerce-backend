@@ -34,7 +34,7 @@ fi
 if [ -f ".env" ]; then
     if ! grep -q "CIPHER_KEY" .env; then
         CIPHER_KEY=$(openssl rand -base64 64 | tr -d '\n' | cut -c1-32)
-        echo "CIPHER_KEY=\"$CIPHER_KEY\"" >> .env
+        echo "CIPHER_KEY=\"$CIPHER_KEY\"" >>.env
         echo "CIPHER_KEY added to .env file"
     else
         echo "CIPHER_KEY already exists in .env file"
