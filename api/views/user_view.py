@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from django.utils import timezone
 from api.utils.hash import Hash
 from api.utils.cipher import HSACipher
+from backend.settings import logger
 
 
 class UserViewSet(viewsets.ViewSet):
@@ -31,7 +32,7 @@ class UserViewSet(viewsets.ViewSet):
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            print(e)
+            logger.error(e)
             raise BadRequest()
 
     @action(methods=["post"], detail=False)
@@ -52,7 +53,7 @@ class UserViewSet(viewsets.ViewSet):
             else:
                 raise NotFound()
         except Exception as e:
-            print(e)
+            logger.error(e)
             raise BadRequest()
 
     @action(methods=["get"], detail=True)
@@ -62,7 +63,7 @@ class UserViewSet(viewsets.ViewSet):
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
-            print(e)
+            logger.error(e)
             raise BadRequest()
 
     @action(methods=["post"], detail=True)
@@ -76,7 +77,7 @@ class UserViewSet(viewsets.ViewSet):
                 {"message": "Logout successfully"}, status=status.HTTP_200_OK
             )
         except Exception as e:
-            print(e)
+            logger.error(e)
             raise BadRequest()
 
     @action(methods=["post"], detail=True)
@@ -95,7 +96,7 @@ class UserViewSet(viewsets.ViewSet):
             else:
                 raise BadRequest()
         except Exception as e:
-            print(e)
+            logger.error(e)
             raise BadRequest()
 
     def get_permissions(self):

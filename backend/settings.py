@@ -159,3 +159,37 @@ with open("keys/private_key.pem", "rb") as f:
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("api.services.auth_service.TokenAuthentication",)
 }
+
+LOGGING = {
+    "version": 1,  # Add this line
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[%(levelname)s] [%(asctime)s] [%(module)s] [%(process)d] [%(thread)d] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S %z",
+        },
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "logs/debug.log",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+        },
+    },
+}
+
+import logging
+
+logger = logging.getLogger("django")

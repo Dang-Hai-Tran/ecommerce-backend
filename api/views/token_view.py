@@ -11,6 +11,7 @@ from rest_framework.decorators import action
 from api.services.user_service import UserService
 from api.utils.hash import Hash
 from api.utils.cipher import HSACipher
+from backend.settings import logger
 
 
 class TokenViewSet(viewsets.ViewSet):
@@ -30,5 +31,5 @@ class TokenViewSet(viewsets.ViewSet):
             else:
                 raise NotFound()
         except Exception as e:
-            print(e)
+            logger.error(e)
             raise BadRequest()
