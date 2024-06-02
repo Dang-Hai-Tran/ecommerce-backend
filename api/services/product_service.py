@@ -1,6 +1,7 @@
 from api.errors.bad_request import BadRequest
 from api.models.product_model import ProductModel
 from django.contrib.postgres.search import SearchVector, SearchQuery
+from api.services.inventory_service import InventoryService
 
 
 class ProductService:
@@ -14,10 +15,10 @@ class ProductService:
         product_seller,
         product_category,
         attributes,
-        product_rating,
         product_variations,
         is_draft,
         is_published,
+        product_rating = 4.5,
         product_slug=None,
     ):
         self.product_name = product_name
@@ -35,7 +36,14 @@ class ProductService:
         self.is_published = is_published
 
     def create_product(self):
-        return ProductModel.objects.create(**self.__dict__)
+        product = ProductModel.objects.create(**self.__dict__)
+        inventory = InventoryService(
+            product_id=product.id,
+            stock=product.product_quantity,
+            seller_id=product.product_seller.id,
+            location="unknown",
+        ).create_inventory()
+        return product
 
     @staticmethod
     def find_all_draft_products(limit=10, page=1):

@@ -1,17 +1,17 @@
+from django.utils import timezone
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from api.errors.bad_request import BadRequest
 from api.errors.not_found import NotFound
-from api.models import UserModel, TokenModel
+from api.models import TokenModel, UserModel
 from api.serializers.user_serializer import UserSerializer
 from api.services.token_service import TokenService
 from api.services.user_service import UserService
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
-from django.utils import timezone
-from api.utils.hash import Hash
 from api.utils.cipher import HSACipher
+from api.utils.hash import Hash
 from backend.settings import logger
 
 
@@ -28,7 +28,7 @@ class UserViewSet(viewsets.ViewSet):
             username = request.data.get("username")
             email = request.data.get("email")
             password = request.data.get("password")
-            user = UserService.createUser(username, email, password)
+            user = UserService.create_user(username, email, password)
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -40,7 +40,7 @@ class UserViewSet(viewsets.ViewSet):
         try:
             username = request.data.get("username")
             password = request.data.get("password")
-            user = UserService.getUserByUsername(username)
+            user = UserService.find_user_by_username(username)
             if user and Hash.checkHash(password, user.password):
                 user.last_login = timezone.now()
                 user.save()

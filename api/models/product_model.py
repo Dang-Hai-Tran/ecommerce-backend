@@ -4,6 +4,8 @@ from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 
+from api.models.user_model import UserModel
+
 
 class ProductModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -13,7 +15,7 @@ class ProductModel(models.Model):
     product_thumbnail = models.CharField(max_length=255)
     product_price = models.DecimalField(max_digits=10, decimal_places=2)
     product_quantity = models.IntegerField()
-    product_seller = models.ForeignKey("UserModel", on_delete=models.CASCADE)
+    product_seller = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     category_choices = (
         ("Electronics", "Electronics"),
         ("Furniture", "Furniture"),
