@@ -322,3 +322,4 @@ pyrightconfig.json
 
 ssl/
 keys/
+diff_head.txt

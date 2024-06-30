@@ -17,7 +17,7 @@ urlpatterns = [
         ProductViewSet.as_view({"post": "publishedProduct"}),
     ),
     path("products/search/", ProductViewSet.as_view({"post": "searchProducts"})),
-    path("products/", ProductViewSet.as_view({"get": "findAllProducts"})),
+    path("products/list/", ProductViewSet.as_view({"get": "findAllProducts"})),
     path("products/<uuid:product_id>/", ProductViewSet.as_view({"get": "findOneProductById"})),
     path("products/<uuid:product_id>/update/", ProductViewSet.as_view({"put": "updateProduct"})),
 ]

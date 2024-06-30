@@ -17,7 +17,7 @@ class DiscountModel(models.Model):
     discount_start_date = models.DateField()
     discount_end_date = models.DateField()
     discount_max_uses = models.IntegerField()
-    discount_uses_count = models.IntegerField()
+    discount_uses_count = models.IntegerField(default=0)
     discount_users = models.ManyToManyField(UserModel, related_name="discount_users")
     discount_max_per_user = models.IntegerField(default=1)
     discount_min_order_value = models.IntegerField(default=50)
